@@ -21,6 +21,7 @@ class GameScene extends Phaser.Scene{
   preload(){
     this.load.image("bg", "/assets/bg.png")
     this.load.image("basket", "/assets/basket.png")
+    this.load.image("apple", "/assets/apple.png")
   }
   
   create(){
@@ -32,10 +33,20 @@ class GameScene extends Phaser.Scene{
     this.player.body.allowGravity = false;
     this.player.setCollideWorldBounds(true);
 
+    this.target = this.physics.add
+    .image(0, 0, "apple")
+    .setOrigin(0, 0)
+    this.target.setMaxVelocity(0, speedDown);
+
     this.cursor = this.input.keyboard.createCursorKeys();
   }
 
   update(){
+
+    if(this.target.y >= sizes.height){
+      this.target.setY(0);
+    }
+
     const {left, right} = this.cursor;
 
     if(left.isDown){
