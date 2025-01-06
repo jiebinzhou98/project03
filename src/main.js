@@ -17,6 +17,8 @@ class GameScene extends Phaser.Scene{
     this.playerSpeed = speedDown + 50;
     this.target
     this.points = 0;
+    this.textScore
+    this.textTime
   }
 
   preload(){
@@ -45,6 +47,16 @@ class GameScene extends Phaser.Scene{
     this.physics.add.overlap(this.target, this.player, this.targetHit, null, this)
 
     this.cursor = this.input.keyboard.createCursorKeys();
+
+    this.textScore = this.add.text(sizes.width - 120, 10, "Score: 0",{
+      font: "25px Arial",
+      fill: "#000000",
+    });
+    
+    this.textTime = this.add.text(10, 10, "Remaining Time: 00", {
+      font: "25px Arial",
+      fill: "#000000",
+    })
   }
 
   update(){
@@ -74,6 +86,7 @@ class GameScene extends Phaser.Scene{
     this.target.setY(0);
     this.target.setX(this.getRandomX());
     this.points++;
+    this.textScore.setText(`Score: ${this.points}`)
   }
 }
 
