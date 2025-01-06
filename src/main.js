@@ -9,6 +9,12 @@ const sizes ={
 
 const speedDown = 300
 
+const gameStartDiv = document.querySelector("#gameStartDiv")
+const gameStartBtn = document.querySelector("#gameStartBtn")
+const gameEndDiv = document.querySelector("#gameEndDiv")
+const gameWinLoseSpan = document.querySelector("#gameWinLoseSpan")
+const gameEndScoreSpan = document.querySelector("#gameEndScoreSpan")
+
 class GameScene extends Phaser.Scene{
   constructor(){
     super("scene-game")
@@ -35,6 +41,8 @@ class GameScene extends Phaser.Scene{
   }
   
   create(){
+
+    this.scene.pause("scene-game")
 
     this.coinMusic = this.sound.add("coin")
     this.bgMusic = this.sound.add("bgMusic")
@@ -72,7 +80,7 @@ class GameScene extends Phaser.Scene{
       fill: "#000000",
     })
 
-    this.timedEvent = this.time.delayedCall(3000, this.gameOver, [], this)
+    this.timedEvent = this.time.delayedCall(30000, this.gameOver, [], this)
 
     this.emitter = this.add.particles(0,0,"money", {
       speed:100,
@@ -118,6 +126,18 @@ class GameScene extends Phaser.Scene{
     this.textScore.setText(`Score: ${this.points}`)
   }
 
+  gameOver(){
+    this.sys.game.destroy(true)
+    if(this.points >=10){
+      gameEndScoreSpan.textContent = this.points
+      gameWinLoseSpan.textContent = "Win!"
+    }else{
+      gameEndScoreSpan.textContent = this.points
+      gameWinLoseSpan.textContent = "Lose!"
+    }
+
+    gameEndDiv.style.display = "flex"
+  }
 
 }
 
@@ -138,3 +158,9 @@ const config = {
 
 
 const game = new Phaser.Game(config)
+
+
+gameStartBtn.addEventListener("click", ()=> {
+  gameStartDiv.style.display = "none"
+  game.scene.resume("scene-game")
+})
